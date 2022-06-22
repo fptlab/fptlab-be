@@ -1,5 +1,6 @@
 package com.alda.fptlab.controller;
 
+import com.alda.fptlab.entity.User;
 import com.alda.fptlab.model.UserModel;
 import com.alda.fptlab.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/registration")
+public class RegistrationController {
 
     @Autowired
     private UserService userService;
@@ -20,4 +23,5 @@ public class AuthController {
         userService.signupUser(userModel);
         return "Registration Success!";
     }
+
 }

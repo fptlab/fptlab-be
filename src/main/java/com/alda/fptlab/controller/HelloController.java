@@ -10,4 +10,5 @@ public class HelloController {
     public String Greeting() {
         return "Welcome to FptLab Application powered by Alda S.R.L.";
     }
+
 }
