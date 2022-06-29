@@ -1,4 +1,4 @@
-package com.alda.fptlab.model;
+package com.alda.fptlab.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

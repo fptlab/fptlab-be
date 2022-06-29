@@ -1,6 +1,6 @@
 package com.alda.fptlab.error;
 
-import com.alda.fptlab.model.ErrorResponseModel;
+import com.alda.fptlab.dto.ErrorResponseModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

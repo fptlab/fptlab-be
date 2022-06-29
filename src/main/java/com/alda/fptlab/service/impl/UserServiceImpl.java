@@ -4,7 +4,7 @@ import com.alda.fptlab.entity.Role;
 import com.alda.fptlab.entity.User;
 import com.alda.fptlab.error.RoleNotFoundException;
 import com.alda.fptlab.error.UserNotFoundException;
-import com.alda.fptlab.model.UserModel;
+import com.alda.fptlab.dto.UserDTO;
 import com.alda.fptlab.repository.RoleRepository;
 import com.alda.fptlab.repository.UserRepository;
 import com.alda.fptlab.service.UserService;
@@ -53,14 +53,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void saveUser(UserModel userModel) {
+    public void saveUser(UserDTO userDTO) {
         log.info("Saving new user");
-        User user = new User();
-        user.setEmail(userModel.getEmail());
-        user.setFirstName(userModel.getFirstName());
-        user.setLastName(userModel.getLastName());
-        user.setPassword(passwordEncoder.encode(userModel.getPassword()));
-        user.getRoles().add(roleRepository.findByName("USER"));
+        var user = User.builder()
+                .firstName(userDTO.getFirstName())
+                .lastName(userDTO.getLastName())
+                .email(userDTO.getEmail())
+                .password(passwordEncoder.encode(userDTO.getPassword()))
+                .roles(List.of(roleRepository.findByName("USER")))
+                .build();
+
         userRepository.save(user);
     }
 
@@ -83,7 +85,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<User> getUserList() {
+    public List<User> fetchUserList() {
         //TODO -> pagination
         log.info("Fetching all the users");
         return userRepository.findAll();

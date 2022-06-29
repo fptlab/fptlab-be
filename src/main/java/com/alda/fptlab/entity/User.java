@@ -1,15 +1,20 @@
 package com.alda.fptlab.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(
         name = "users",
         uniqueConstraints = @UniqueConstraint(
@@ -31,6 +36,7 @@ public class User {
     private String email;
     @NotBlank(message = "Please enter password")
     private String password;
+    @Builder.Default
     private boolean enabled = false;
 
     @ManyToMany(
@@ -49,6 +55,6 @@ public class User {
             )
     )
 
+    @Builder.Default
     private Collection<Role> roles = new ArrayList<>();
-
 }

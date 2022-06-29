@@ -19,8 +19,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok().body(userService.getUserList());
+    ResponseEntity<List<User>> fetchUserList() {
+        return ResponseEntity.ok().body(userService.fetchUserList());
     }
 
     @PutMapping("/{id}/roles/{roleId}")
