@@ -3,6 +3,8 @@ package com.alda.fptlab.controller;
 import com.alda.fptlab.dto.UserDTO;
 import com.alda.fptlab.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +20,9 @@ public class RegistrationController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public String saveUser(@Valid @RequestBody UserDTO userModel) {
+    public ResponseEntity<String> saveUser(@Valid @RequestBody UserDTO userModel) {
         userService.saveUser(userModel);
-        return "Registration Success!";
+        return ResponseEntity.ok().body("User create successful!");
     }
 
 }
