@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserService {
 
-    void saveUser(UserDTO userModel);
+    void saveUser(UserDTO userDTO);
     void updateUserWithRole(Long userId, Long roleId) throws UserNotFoundException, RoleNotFoundException;
     List<User> fetchUserList();
 

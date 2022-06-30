@@ -20,8 +20,8 @@ public class RegistrationController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> saveUser(@Valid @RequestBody UserDTO userModel) {
-        userService.saveUser(userModel);
+    public ResponseEntity<String> saveUser(@Valid @RequestBody UserDTO userDTO) {
+        userService.saveUser(userDTO);
         return ResponseEntity.ok().body("User create successful!");
     }
 
