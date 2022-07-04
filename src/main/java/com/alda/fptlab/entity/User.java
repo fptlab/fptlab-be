@@ -1,5 +1,6 @@
 package com.alda.fptlab.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +36,7 @@ public class User {
     @NotBlank(message = "Please enter email")
     private String email;
     @NotBlank(message = "Please enter password")
+    @JsonIgnore
     private String password;
     @Builder.Default
     private boolean enabled = false;
