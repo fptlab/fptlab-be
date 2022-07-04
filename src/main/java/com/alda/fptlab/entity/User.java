@@ -26,7 +26,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
     @NotBlank(message = "Please enter first name")
     private String firstName;
@@ -46,12 +46,12 @@ public class User {
     @JoinTable(
             name = "user_role_map",
             joinColumns = @JoinColumn(
-                    name = "user_ide",
-                    referencedColumnName = "userId"
+                    name = "user_id",
+                    referencedColumnName = "id"
             ),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id",
-                    referencedColumnName = "roleId"
+                    referencedColumnName = "id"
             )
     )
 

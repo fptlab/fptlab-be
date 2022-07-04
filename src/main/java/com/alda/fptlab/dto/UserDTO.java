@@ -11,5 +11,5 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
+    private String password; //TODO delete - password generata e invio mail
 }
