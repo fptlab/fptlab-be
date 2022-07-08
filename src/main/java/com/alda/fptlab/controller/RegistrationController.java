@@ -3,7 +3,6 @@ package com.alda.fptlab.controller;
 import com.alda.fptlab.dto.UserDTO;
 import com.alda.fptlab.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

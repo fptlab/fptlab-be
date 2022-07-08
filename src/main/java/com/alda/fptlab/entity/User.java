@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -59,4 +60,7 @@ public class User {
 
     @Builder.Default
     private Collection<Role> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Subscription> subscriptionList;
 }
