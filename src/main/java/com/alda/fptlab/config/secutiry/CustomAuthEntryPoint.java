@@ -23,11 +23,11 @@ public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-        ApiResponseDTO genericErrorDTO = ApiResponseDTO.builder()
+        ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder()
                 .status(HttpServletResponse.SC_UNAUTHORIZED)
                 .message(authException.getMessage())
                 .build();
 
-        new ObjectMapper().writeValue(response.getOutputStream(), genericErrorDTO);
+        new ObjectMapper().writeValue(response.getOutputStream(), apiResponseDTO);
     }
 }

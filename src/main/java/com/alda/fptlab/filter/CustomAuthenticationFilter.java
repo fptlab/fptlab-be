@@ -89,13 +89,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.error("UnsuccessfulAuthentication error: {}", exception.getMessage());
 
-        ApiResponseDTO genericErrorDTO = ApiResponseDTO.builder()
+        ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder()
                 .status(HttpServletResponse.SC_UNAUTHORIZED)
                 .message(exception.getMessage())
                 .build();
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        new ObjectMapper().writeValue(response.getOutputStream(), genericErrorDTO);
+        new ObjectMapper().writeValue(response.getOutputStream(), apiResponseDTO);
     }
 }
