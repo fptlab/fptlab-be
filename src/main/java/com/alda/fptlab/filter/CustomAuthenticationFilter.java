@@ -23,8 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -85,5 +83,19 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .build();
 
         new ObjectMapper().writeValue(response.getOutputStream(), apiResponseDTO);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+        log.error("UnsuccessfulAuthentication error: {}", exception.getMessage());
+
+        ApiResponseDTO genericErrorDTO = ApiResponseDTO.builder()
+                .status(HttpServletResponse.SC_UNAUTHORIZED)
+                .message(exception.getMessage())
+                .build();
+
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        new ObjectMapper().writeValue(response.getOutputStream(), genericErrorDTO);
     }
 }
