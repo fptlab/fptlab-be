@@ -1,4 +1,4 @@
-package com.alda.fptlab.error;
+package com.alda.fptlab.exception;
 
 public class RoleNotFoundException extends Exception{
 

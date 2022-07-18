@@ -1,11 +1,14 @@
 package com.alda.fptlab.filter;
 
+import com.alda.fptlab.dto.response.JwtDTO;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -29,15 +32,21 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     private final AuthenticationManager authenticationManager;
 
+    @Value("${alda.fptlab.jwtSecret}")
+    private String jwtSecret;
+
+    @Value("${alda.fptlab.jwtExpirationMs}")
+    private int jwtExpirationMs;
+
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, BadCredentialsException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        log.info("User email is: {} and password is: {}", email, password);
+        log.info("attemptAuthentication with user email: {}", email);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
         return authenticationManager.authenticate(authenticationToken);
     }
@@ -45,25 +54,29 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
 
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
 
         String refresh_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpirationMs * 3))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
-        Map<String,String> tokenMap = new HashMap<>();
-        tokenMap.put("access_token", access_token);
-        tokenMap.put("refresh_token", refresh_token);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokenMap);
+
+        JwtDTO jwtDTO = JwtDTO.builder()
+                .token(access_token)
+                .refreshToken(refresh_token)
+                .email(user.getUsername())
+                .build();
+
+        new ObjectMapper().writeValue(response.getOutputStream(), jwtDTO);
     }
 }

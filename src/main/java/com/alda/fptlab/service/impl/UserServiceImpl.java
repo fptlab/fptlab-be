@@ -2,24 +2,18 @@ package com.alda.fptlab.service.impl;
 
 import com.alda.fptlab.entity.Role;
 import com.alda.fptlab.entity.User;
-import com.alda.fptlab.error.RoleNotFoundException;
-import com.alda.fptlab.error.UserNotFoundException;
-import com.alda.fptlab.dto.UserDTO;
+import com.alda.fptlab.exception.RoleNotFoundException;
+import com.alda.fptlab.exception.UserNotFoundException;
+import com.alda.fptlab.dto.request.UserDTO;
 import com.alda.fptlab.repository.RoleRepository;
 import com.alda.fptlab.repository.UserRepository;
 import com.alda.fptlab.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,30 +21,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-
-    @Override
-    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(userEmail);
-        if(user == null) {
-            log.error("User not found");
-            throw new UsernameNotFoundException("User not found");
-        }
-        log.info("User found: {}", userEmail);
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        });
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                authorities
-        );
-    }
 
     @Override
     public void saveUser(UserDTO userDTO) {

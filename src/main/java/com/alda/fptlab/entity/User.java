@@ -7,7 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,13 +34,19 @@ public class User {
 
     @NotBlank(message = "Please enter first name")
     private String firstName;
+
     @NotBlank(message = "Please enter last name")
     private String lastName;
+
     @NotBlank(message = "Please enter email")
+    @Size(max = 50)
+    @Email
     private String email;
+
     @NotBlank(message = "Please enter password")
     @JsonIgnore
     private String password;
+
     @Builder.Default
     private boolean enabled = false;
 
@@ -57,7 +65,6 @@ public class User {
                     referencedColumnName = "id"
             )
     )
-
     @Builder.Default
     private Collection<Role> roles = new ArrayList<>();
 

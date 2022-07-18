@@ -1,9 +1,9 @@
 package com.alda.fptlab.service;
 
 import com.alda.fptlab.entity.User;
-import com.alda.fptlab.error.RoleNotFoundException;
-import com.alda.fptlab.error.UserNotFoundException;
-import com.alda.fptlab.dto.UserDTO;
+import com.alda.fptlab.exception.RoleNotFoundException;
+import com.alda.fptlab.exception.UserNotFoundException;
+import com.alda.fptlab.dto.request.UserDTO;
 
 import java.util.List;
 

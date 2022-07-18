@@ -13,9 +13,4 @@ public class FptlabApplication {
 		SpringApplication.run(FptlabApplication.class, args);
 	}
 
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
 }

@@ -1,5 +1,6 @@
 package com.alda.fptlab.filter;
 
+import com.alda.fptlab.dto.error.GenericErrorDTO;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -38,12 +39,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        response.addHeader("Access-Control-Allow-Origin", "*");
-        response.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH, HEAD");
-        response.addHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-        response.addHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin, Access-Control-Allow-Credentials");
-        response.addHeader("Access-Control-Allow-Credentials", "true");
-        response.addIntHeader("Access-Control-Max-Age", 10);
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if(authorizationHeader != null &&  authorizationHeader.startsWith(TOKEN_PREFIX)){
             try {
@@ -58,19 +53,21 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 });
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                filterChain.doFilter(request,response);
             } catch (Exception exception) {
                 log.error("Error logging in {}", exception.getMessage());
                 response.setHeader("error", exception.getMessage());
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                Map<String,String> errorMap = new HashMap<>();
-                errorMap.put("error_message", exception.getMessage());
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), errorMap);
+
+                GenericErrorDTO genericErrorDTO = GenericErrorDTO.builder()
+                        .status(HttpServletResponse.SC_UNAUTHORIZED)
+                        .message(exception.getMessage())
+                        .build();
+
+                new ObjectMapper().writeValue(response.getOutputStream(), genericErrorDTO);
             }
-        } else {
-            filterChain.doFilter(request,response);
-            return;
         }
+
+        filterChain.doFilter(request,response);
     }
 }
