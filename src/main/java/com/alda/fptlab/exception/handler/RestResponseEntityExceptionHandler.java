@@ -1,12 +1,11 @@
 package com.alda.fptlab.exception.handler;
 
-import com.alda.fptlab.dto.error.GenericErrorDTO;
+import com.alda.fptlab.dto.response.ApiResponseDTO;
 import com.alda.fptlab.exception.RoleNotFoundException;
 import com.alda.fptlab.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -21,8 +20,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<GenericErrorDTO> userNotFoundException (UserNotFoundException userNotFoundException, WebRequest request) {
-        var error = GenericErrorDTO.builder()
+    public ResponseEntity<ApiResponseDTO> userNotFoundException (UserNotFoundException userNotFoundException, WebRequest request) {
+        var error = ApiResponseDTO.builder()
                 .status(HttpServletResponse.SC_NOT_FOUND)
                 .message(userNotFoundException.getMessage())
                 .build();
@@ -31,8 +30,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(RoleNotFoundException.class)
-    public ResponseEntity<GenericErrorDTO> roleNotFoundException (RoleNotFoundException roleNotFoundException, WebRequest request) {
-        var error = GenericErrorDTO.builder()
+    public ResponseEntity<ApiResponseDTO> roleNotFoundException (RoleNotFoundException roleNotFoundException, WebRequest request) {
+        var error = ApiResponseDTO.builder()
                 .status(HttpServletResponse.SC_NOT_FOUND)
                 .message(roleNotFoundException.getMessage())
                 .build();

@@ -1,5 +1,6 @@
 package com.alda.fptlab.filter;
 
+import com.alda.fptlab.dto.response.ApiResponseDTO;
 import com.alda.fptlab.dto.response.JwtDTO;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -77,6 +78,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .email(user.getUsername())
                 .build();
 
-        new ObjectMapper().writeValue(response.getOutputStream(), jwtDTO);
+        ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder()
+                .status(HttpServletResponse.SC_OK)
+                .message("Authentication successful")
+                .result(jwtDTO)
+                .build();
+
+        new ObjectMapper().writeValue(response.getOutputStream(), apiResponseDTO);
     }
 }

@@ -1,6 +1,6 @@
 package com.alda.fptlab.exception.handler;
 
-import com.alda.fptlab.dto.error.GenericErrorDTO;
+import com.alda.fptlab.dto.response.ApiResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class AuthExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> handleAuthenticationException(BadCredentialsException badCredentialsException, WebRequest request) {
-        var error = GenericErrorDTO.builder()
+        var error = ApiResponseDTO.builder()
                 .message(String.format("BadCredentials: %s", badCredentialsException.getMessage()))
                 .status(HttpServletResponse.SC_NOT_FOUND)
                 .build();
@@ -33,7 +33,7 @@ public class AuthExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<Object> handleAuthenticationException(AuthenticationException authenticationException, WebRequest request) {
-        var error = GenericErrorDTO.builder()
+        var error = ApiResponseDTO.builder()
                 .message(String.format("AuthenticationException: %s", authenticationException.getMessage()))
                 .status(HttpServletResponse.SC_BAD_REQUEST)
                 .build();
@@ -44,7 +44,7 @@ public class AuthExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(SignatureException.class)
     public ResponseEntity<Object> handleSignatureException(SignatureException signatureException, WebRequest request) {
-        var error = GenericErrorDTO.builder()
+        var error = ApiResponseDTO.builder()
                 .message(String.format("Invalid JWT signature: %s", signatureException.getMessage()))
                 .status(HttpServletResponse.SC_BAD_REQUEST)
                 .build();

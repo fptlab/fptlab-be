@@ -1,8 +1,7 @@
 package com.alda.fptlab.filter;
 
-import com.alda.fptlab.dto.error.GenericErrorDTO;
+import com.alda.fptlab.dto.response.ApiResponseDTO;
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,8 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import static java.util.Arrays.stream;
 
@@ -59,7 +56,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-                GenericErrorDTO genericErrorDTO = GenericErrorDTO.builder()
+                ApiResponseDTO genericErrorDTO = ApiResponseDTO.builder()
                         .status(HttpServletResponse.SC_UNAUTHORIZED)
                         .message(exception.getMessage())
                         .build();
