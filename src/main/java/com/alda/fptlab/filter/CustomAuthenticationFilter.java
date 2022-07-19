@@ -6,7 +6,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,12 +29,8 @@ import java.util.stream.Collectors;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-
-    @Value("${alda.fptlab.jwtSecret}")
-    private String jwtSecret;
-
-    @Value("${alda.fptlab.jwtExpirationMs}")
-    private int jwtExpirationMs;
+    private final String JWT_SECRET = "secret";
+    private final int JWT_EXPIRATION_TIME = 6000000;
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -53,18 +48,18 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
+        Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET.getBytes());
 
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .withExpiresAt(new Date(System.currentTimeMillis() + JWT_EXPIRATION_TIME))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
 
         String refresh_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpirationMs * 3))
+                .withExpiresAt(new Date(System.currentTimeMillis() + JWT_EXPIRATION_TIME * 3))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
@@ -73,12 +68,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         JwtDTO jwtDTO = JwtDTO.builder()
                 .token(access_token)
                 .refreshToken(refresh_token)
-                .email(user.getUsername())
+                .user(user.getUsername())
                 .build();
 
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder()
                 .status(HttpServletResponse.SC_OK)
-                .message("Authentication successful")
+                .message("Login avvenuto con successo!")
                 .result(jwtDTO)
                 .build();
 

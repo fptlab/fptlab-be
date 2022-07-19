@@ -1,8 +1,10 @@
 package com.alda.fptlab.service.impl;
 
+import com.alda.fptlab.entity.ERole;
 import com.alda.fptlab.entity.Role;
 import com.alda.fptlab.entity.User;
 import com.alda.fptlab.exception.RoleNotFoundException;
+import com.alda.fptlab.exception.UserAlreadyExistException;
 import com.alda.fptlab.exception.UserNotFoundException;
 import com.alda.fptlab.dto.request.UserDTO;
 import com.alda.fptlab.repository.RoleRepository;
@@ -28,17 +30,19 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void saveUser(UserDTO userDTO) {
-        log.info("Saving new user");
+    public void signupUser(UserDTO userDTO) throws UserAlreadyExistException {
+        log.info("Signup user start");
+        if(userRepository.findByEmail(userDTO.getEmail()).isPresent()) throw new UserAlreadyExistException("Email già in uso!");
         var user = User.builder()
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
                 .email(userDTO.getEmail())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
-                .roles(List.of(roleRepository.findByName("USER")))
+                .roles(List.of(roleRepository.findByName(ERole.ROLE_USER)))
                 .build();
 
         userRepository.save(user);
+        log.info("Signup user success!");
     }
 
     @Override

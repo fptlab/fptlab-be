@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class JwtDTO {
-    private String token;
-    private String refreshToken;
-    @Builder.Default
-    private String type = "Bearer";
-    private String user;
+public class ValidationErrorDTO {
+    private String object;
+    private String field;
+    private String message;
+    private Object rejectedValue;
 }

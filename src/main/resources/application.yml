@@ -18,5 +18,5 @@ server:
 
 alda:
   fptlab:
-    jwtSecret: secret
+    jwtSecret: "secret"
     jwtExpirationMs: 6000000

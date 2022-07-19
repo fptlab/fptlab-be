@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomAuthEntryPoint customAuthEntryPoint;
 
     private static final String[] WHITE_LIST_URLS = {
-            "/registration/**",
+            "/auth/signup",
             "/hello"
     };
 
