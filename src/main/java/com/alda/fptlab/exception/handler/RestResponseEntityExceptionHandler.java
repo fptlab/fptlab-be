@@ -47,14 +47,14 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(UserAlreadyExistException.class)
     public ResponseEntity<ApiResponseDTO> userAlreadyExistException (UserAlreadyExistException userAlreadyExistException, WebRequest request) {
         var error = ApiResponseDTO.builder()
-                .status(HttpServletResponse.SC_BAD_REQUEST)
+                .status(HttpServletResponse.SC_CONFLICT)
                 .message(userAlreadyExistException.getMessage())
                 .build();
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
     @Override

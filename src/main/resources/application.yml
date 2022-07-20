@@ -15,8 +15,3 @@ server:
   port: 8082
   servlet:
     context-path: "/rest/api"
-
-alda:
-  fptlab:
-    jwtSecret: "secret"
-    jwtExpirationMs: 6000000

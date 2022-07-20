@@ -14,7 +14,7 @@ public class UserDTO {
     @NotBlank
     private String firstName;
 
-    @NotBlank
+    @NotBlank(message = "Cognome obbligatorio!")
     private String lastName;
 
     @NotBlank
