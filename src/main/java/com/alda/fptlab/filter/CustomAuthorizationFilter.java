@@ -30,9 +30,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     private final AuthenticationManager authenticationManager;
     private final static String TOKEN_PREFIX = "Bearer ";
-
-    @Value("${alda.fptlab.jwtSecret}")
-    private String jwtSecret;
+    private final String JWT_SECRET = "secret";
 
     public CustomAuthorizationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -43,7 +41,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if(authorizationHeader != null &&  authorizationHeader.startsWith(TOKEN_PREFIX)){
             try {
-                DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(jwtSecret.getBytes()))
+                DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(JWT_SECRET.getBytes()))
                         .build()
                         .verify(authorizationHeader.replace(TOKEN_PREFIX,""));
                 String email = decodedJWT.getSubject();
