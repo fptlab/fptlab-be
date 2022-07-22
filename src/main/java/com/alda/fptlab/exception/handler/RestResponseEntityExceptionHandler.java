@@ -2,10 +2,7 @@ package com.alda.fptlab.exception.handler;
 
 import com.alda.fptlab.dto.response.ApiResponseDTO;
 import com.alda.fptlab.dto.response.ValidationErrorDTO;
-import com.alda.fptlab.exception.RoleNotFoundException;
-import com.alda.fptlab.exception.SubscriptionTypeNotFoundException;
-import com.alda.fptlab.exception.UserAlreadyExistException;
-import com.alda.fptlab.exception.UserNotFoundException;
+import com.alda.fptlab.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.springframework.http.HttpHeaders;
@@ -64,6 +61,16 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         var error = ApiResponseDTO.builder()
                 .status(HttpServletResponse.SC_CONFLICT)
                 .message(userAlreadyExistException.getMessage())
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(SubscriptionAlreadyActiveException.class)
+    public ResponseEntity<ApiResponseDTO> subscriptionAlreadyActiveException (SubscriptionAlreadyActiveException subscriptionAlreadyActiveException, WebRequest request) {
+        var error = ApiResponseDTO.builder()
+                .status(HttpServletResponse.SC_CONFLICT)
+                .message(subscriptionAlreadyActiveException.getMessage())
                 .build();
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }

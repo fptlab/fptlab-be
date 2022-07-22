@@ -3,6 +3,7 @@ package com.alda.fptlab.controller;
 
 import com.alda.fptlab.dto.response.ApiResponseDTO;
 import com.alda.fptlab.exception.RoleNotFoundException;
+import com.alda.fptlab.exception.SubscriptionAlreadyActiveException;
 import com.alda.fptlab.exception.SubscriptionTypeNotFoundException;
 import com.alda.fptlab.exception.UserNotFoundException;
 import com.alda.fptlab.service.UserService;
@@ -22,7 +23,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    ResponseEntity<ApiResponseDTO> fetchUserList() {
+    public ResponseEntity<ApiResponseDTO> fetchUserList() {
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder()
                 .status(HttpServletResponse.SC_OK)
                 .result(userService.fetchUserList())
@@ -30,19 +31,28 @@ public class UserController {
         return ResponseEntity.ok().body(apiResponseDTO);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/{userId}/subscription-type/{subTypeId}")
-    public ResponseEntity<ApiResponseDTO> updateUser(@PathVariable("userId") Long userId, @PathVariable("subTypeId") Long subTypeId) throws UserNotFoundException, SubscriptionTypeNotFoundException {
+    @GetMapping("/{userId}")
+    public ResponseEntity<ApiResponseDTO> fetchUser(@PathVariable("userId") Long userId) throws UserNotFoundException {
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder()
                 .status(HttpServletResponse.SC_OK)
-                .result(userService.updateUser(userId, subTypeId))
+                .result(userService.fetchUser(userId))
                 .build();
         return ResponseEntity.ok().body(apiResponseDTO);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/{id}/roles/{roleId}")
-    public ResponseEntity<?> updateUserWithRole(@PathVariable("id") Long userId, @PathVariable("roleId") Long roleId) throws UserNotFoundException, RoleNotFoundException {
+    @PutMapping("/{userId}/subscriptions-type/{subTypeId}")
+    public ResponseEntity<ApiResponseDTO> updateUserWithSubscription(@PathVariable("userId") Long userId, @PathVariable("subTypeId") Long subTypeId) throws UserNotFoundException, SubscriptionTypeNotFoundException, SubscriptionAlreadyActiveException {
+        ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder()
+                .status(HttpServletResponse.SC_OK)
+                .result(userService.updateUserWithSubscription(userId, subTypeId))
+                .build();
+        return ResponseEntity.ok().body(apiResponseDTO);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/{userId}/roles/{roleId}")
+    public ResponseEntity<?> updateUserWithRole(@PathVariable("userId") Long userId, @PathVariable("roleId") Long roleId) throws UserNotFoundException, RoleNotFoundException {
         userService.updateUserWithRole(userId, roleId);
         return ResponseEntity.ok().build();
     }
