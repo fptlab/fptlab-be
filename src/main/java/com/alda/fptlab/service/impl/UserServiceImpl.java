@@ -1,13 +1,18 @@
 package com.alda.fptlab.service.impl;
 
-import com.alda.fptlab.entity.ERole;
+import com.alda.fptlab.entity.Subscription;
+import com.alda.fptlab.entity.SubscriptionType;
+import com.alda.fptlab.enums.ERole;
 import com.alda.fptlab.entity.Role;
 import com.alda.fptlab.entity.User;
 import com.alda.fptlab.exception.RoleNotFoundException;
+import com.alda.fptlab.exception.SubscriptionTypeNotFoundException;
 import com.alda.fptlab.exception.UserAlreadyExistException;
 import com.alda.fptlab.exception.UserNotFoundException;
 import com.alda.fptlab.dto.request.UserDTO;
 import com.alda.fptlab.repository.RoleRepository;
+import com.alda.fptlab.repository.SubscriptionRepository;
+import com.alda.fptlab.repository.SubscriptionTypeRepository;
 import com.alda.fptlab.repository.UserRepository;
 import com.alda.fptlab.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +33,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final SubscriptionTypeRepository subscriptionTypeRepository;
+    private final SubscriptionRepository subscriptionRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -68,5 +76,32 @@ public class UserServiceImpl implements UserService {
         //TODO -> pagination
         log.info("Fetching all the users");
         return userRepository.findAll();
+    }
+
+    @Override
+    public User updateUser(Long userId, Long subTypeId) throws UserNotFoundException, SubscriptionTypeNotFoundException {
+        Optional<User> user = userRepository.findById(userId);
+        if(!user.isPresent()) {
+            log.error("User not found");
+            throw new UserNotFoundException("User not found");
+        }
+        Optional<SubscriptionType> subscriptionType = subscriptionTypeRepository.findById(subTypeId);
+        if(!subscriptionType.isPresent()) {
+            log.error("SubscriptionType not found");
+            throw new SubscriptionTypeNotFoundException("SubscriptionType not found");
+        }
+
+        Subscription subscription = Subscription.builder()
+                .user(user.get())
+                .subscriptionType(subscriptionType.get())
+                .isActive(true)
+                .startDate(new Date())
+                .reservationLeft(subscriptionType.get().getLessonPackage())
+                .build();
+
+        userRepository.save(user.get());
+        subscriptionRepository.save(subscription);
+        user.get().setEnabled(true);
+        return userRepository.save(user.get());
     }
 }

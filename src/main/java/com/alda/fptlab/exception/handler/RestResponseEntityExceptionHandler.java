@@ -3,6 +3,7 @@ package com.alda.fptlab.exception.handler;
 import com.alda.fptlab.dto.response.ApiResponseDTO;
 import com.alda.fptlab.dto.response.ValidationErrorDTO;
 import com.alda.fptlab.exception.RoleNotFoundException;
+import com.alda.fptlab.exception.SubscriptionTypeNotFoundException;
 import com.alda.fptlab.exception.UserAlreadyExistException;
 import com.alda.fptlab.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,16 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         var error = ApiResponseDTO.builder()
                 .status(HttpServletResponse.SC_NOT_FOUND)
                 .message(roleNotFoundException.getMessage())
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(SubscriptionTypeNotFoundException.class)
+    public ResponseEntity<ApiResponseDTO> subscriptionTypeNotFoundException (SubscriptionTypeNotFoundException subscriptionTypeNotFoundException, WebRequest request) {
+        var error = ApiResponseDTO.builder()
+                .status(HttpServletResponse.SC_NOT_FOUND)
+                .message(subscriptionTypeNotFoundException.getMessage())
                 .build();
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }

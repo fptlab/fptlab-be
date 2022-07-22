@@ -1,10 +1,8 @@
 package com.alda.fptlab.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -26,6 +24,7 @@ import java.util.List;
                 columnNames = "email"
         )
 )
+@ToString
 public class User {
 
     @Id
@@ -69,5 +68,7 @@ public class User {
     private Collection<Role> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Subscription> subscriptionList;
+    @Builder.Default
+    @JsonManagedReference
+    private Collection<Subscription> subscriptionList = new ArrayList<>();
 }

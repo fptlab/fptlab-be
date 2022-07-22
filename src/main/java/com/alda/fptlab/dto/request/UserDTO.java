@@ -11,16 +11,16 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-    @NotBlank
+    @NotBlank(message = "Campo nome obbligatorio!")
     private String firstName;
 
-    @NotBlank(message = "Cognome obbligatorio!")
+    @NotBlank(message = "Campo cognome obbligatorio!")
     private String lastName;
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "Campo email obbligatorio!")
+    @Email(message = "Formato mail non valido!")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Campo password obbligatorio!")
     private String password;
 }

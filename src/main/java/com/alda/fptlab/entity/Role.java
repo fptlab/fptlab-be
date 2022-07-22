@@ -1,5 +1,6 @@
 package com.alda.fptlab.entity;
 
+import com.alda.fptlab.enums.ERole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

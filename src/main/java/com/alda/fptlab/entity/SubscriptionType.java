@@ -1,5 +1,7 @@
 package com.alda.fptlab.entity;
 
+import com.alda.fptlab.enums.EWorkOutDuration;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,9 +19,11 @@ public class SubscriptionType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
-    private int duration;
+
+    @Enumerated(EnumType.STRING)
+    private EWorkOutDuration workOutDuration;
+
     private int lessonPackage;
-    @OneToMany(mappedBy = "subscriptionType")
-    private List<Subscription> subscriptionList;
 }

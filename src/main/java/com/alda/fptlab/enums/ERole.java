@@ -1,4 +1,4 @@
-package com.alda.fptlab.entity;
+package com.alda.fptlab.enums;
 
 public enum ERole {
     ROLE_USER,

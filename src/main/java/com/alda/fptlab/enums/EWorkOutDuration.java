@@ -1,11 +1,11 @@
 package com.alda.fptlab.enums;
 
-public enum SubscriptionDurationEnum {
+public enum EWorkOutDuration {
     HALF_AN_HOUR(30), ONE_HOUR(60);
 
     private int duration;
 
-    SubscriptionDurationEnum(int duration) {
+    EWorkOutDuration(int duration) {
         this.duration = duration;
     }
 

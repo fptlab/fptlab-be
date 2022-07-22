@@ -1,9 +1,7 @@
 package com.alda.fptlab.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,25 +12,27 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Date startDate;
     private boolean isActive;
     private int reservationLeft;
+
     @ManyToOne
     @JoinColumn(
             name = "user_id",
             nullable = false
     )
+    @JsonBackReference
     private User user;
-    @ManyToOne
-    @JoinColumn(
-            name = "subscriptionType_id",
-            nullable = false
-    )
+
+    @OneToOne
     private SubscriptionType subscriptionType;
+
     @OneToMany(mappedBy = "subscription")
     private List<Reservation> reservationList;
 }

@@ -10,6 +10,8 @@ import lombok.*;
 @ToString
 public class ApiResponseDTO<T> {
     private int status;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
