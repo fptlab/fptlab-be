@@ -11,6 +11,6 @@ public interface UserService {
     void signupUser(UserDTO userDTO) throws UserAlreadyExistException;
     void updateUserWithRole(Long userId, Long roleId) throws UserNotFoundException, RoleNotFoundException;
     List<User> fetchUserList();
-    User updateUserWithSubscription(Long userId, Long subTypeId) throws UserNotFoundException, SubscriptionTypeNotFoundException, SubscriptionAlreadyActiveException;
+    void updateUserWithSubscription(Long userId, Long subTypeId) throws UserNotFoundException, SubscriptionTypeNotFoundException, SubscriptionAlreadyActiveException;
     User fetchUser(Long userId) throws UserNotFoundException;
 }

@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUserWithSubscription(Long userId, Long subTypeId) throws UserNotFoundException, SubscriptionTypeNotFoundException, SubscriptionAlreadyActiveException {
+    public void updateUserWithSubscription(Long userId, Long subTypeId) throws UserNotFoundException, SubscriptionTypeNotFoundException, SubscriptionAlreadyActiveException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
@@ -99,12 +99,11 @@ public class UserServiceImpl implements UserService {
                     .build();
             subscriptionRepository.save(subscription);
             user.setEnabled(true);
-            userRepository.save(user);
         } else {
             throw new SubscriptionAlreadyActiveException("The user already has an active subscription");
         }
 
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     @Override

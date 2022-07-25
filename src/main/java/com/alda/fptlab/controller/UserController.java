@@ -43,9 +43,10 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{userId}/subscriptions-type/{subTypeId}")
     public ResponseEntity<ApiResponseDTO> updateUserWithSubscription(@PathVariable("userId") Long userId, @PathVariable("subTypeId") Long subTypeId) throws UserNotFoundException, SubscriptionTypeNotFoundException, SubscriptionAlreadyActiveException {
+        userService.updateUserWithSubscription(userId,subTypeId);
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder()
                 .status(HttpServletResponse.SC_OK)
-                .result(userService.updateUserWithSubscription(userId, subTypeId))
+                .message("Utente aggiornato con successo!")
                 .build();
         return ResponseEntity.ok().body(apiResponseDTO);
     }
