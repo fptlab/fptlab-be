@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -107,7 +108,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User fetchUser(Long userId) throws UserNotFoundException {
+    public User fetchUserById(Long userId) throws UserNotFoundException {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
+
+    @Override
+    public User fetchUser(Principal principal) throws UserNotFoundException {
+        return userRepository.findByEmail(principal.getName())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 }

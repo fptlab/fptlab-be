@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -31,11 +32,20 @@ public class UserController {
         return ResponseEntity.ok().body(apiResponseDTO);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<ApiResponseDTO> fetchUser(@PathVariable("userId") Long userId) throws UserNotFoundException {
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponseDTO> fetchUser(Principal principal) throws UserNotFoundException {
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder()
                 .status(HttpServletResponse.SC_OK)
-                .result(userService.fetchUser(userId))
+                .result(userService.fetchUser(principal))
+                .build();
+        return ResponseEntity.ok().body(apiResponseDTO);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<ApiResponseDTO> fetchUserById(@PathVariable("userId") Long userId) throws UserNotFoundException {
+        ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder()
+                .status(HttpServletResponse.SC_OK)
+                .result(userService.fetchUserById(userId))
                 .build();
         return ResponseEntity.ok().body(apiResponseDTO);
     }
