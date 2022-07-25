@@ -1,5 +1,6 @@
 package com.alda.fptlab.config.secutiry;
 
+import com.alda.fptlab.filter.CORSFilter;
 import com.alda.fptlab.filter.CustomAuthenticationFilter;
 import com.alda.fptlab.filter.CustomAuthorizationFilter;
 import com.alda.fptlab.service.impl.UserDetailsServiceImpl;
@@ -50,6 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeHttpRequests().antMatchers(WHITE_LIST_URLS).permitAll();
         http.authorizeHttpRequests().anyRequest().authenticated();
         http.addFilter(new CustomAuthenticationFilter(authenticationManager()));
+        http.addFilter(new CORSFilter());
         http.addFilterBefore(new CustomAuthorizationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
     }
 }
