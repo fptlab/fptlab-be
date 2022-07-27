@@ -1,12 +1,12 @@
 package com.alda.fptlab.service.impl;
 
+import com.alda.fptlab.dto.request.UserDTO;
+import com.alda.fptlab.entity.Role;
 import com.alda.fptlab.entity.Subscription;
 import com.alda.fptlab.entity.SubscriptionType;
-import com.alda.fptlab.enums.ERole;
-import com.alda.fptlab.entity.Role;
 import com.alda.fptlab.entity.User;
+import com.alda.fptlab.enums.ERole;
 import com.alda.fptlab.exception.*;
-import com.alda.fptlab.dto.request.UserDTO;
 import com.alda.fptlab.repository.RoleRepository;
 import com.alda.fptlab.repository.SubscriptionRepository;
 import com.alda.fptlab.repository.SubscriptionTypeRepository;
@@ -14,7 +14,6 @@ import com.alda.fptlab.repository.UserRepository;
 import com.alda.fptlab.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void signupUser(UserDTO userDTO) throws UserAlreadyExistException {
-        log.info("Signup user start");
+        log.info("signupUser START");
         if(userRepository.findByEmail(userDTO.getEmail()).isPresent()) throw new UserAlreadyExistException("Email già in uso!");
         var user = User.builder()
                 .firstName(userDTO.getFirstName())
@@ -50,12 +49,12 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         userRepository.save(user);
-        log.info("Signup user success!");
+        log.info("signupUser success!");
     }
 
     @Override
     public void updateUserWithRole(Long userId, Long roleId) throws UserNotFoundException, RoleNotFoundException {
-        log.info("Start updateUserWithRole");
+        log.info("updateUserWithRole START");
         Optional<User> user = userRepository.findById(userId);
         if(!user.isPresent()) {
             log.error("User not found");
@@ -69,12 +68,13 @@ public class UserServiceImpl implements UserService {
         user.get().getRoles().add(role.get());
         log.info("Updating user {} with role {}", user.get().getEmail(), role.get().getName());
         userRepository.save(user.get());
+        log.info("updateUserWithRole success!");
     }
 
     @Override
     public List<User> fetchUserList() {
         //TODO -> pagination
-        log.info("Fetching all the users");
+        log.info("fetchUserList START");
         return userRepository.findAll();
     }
 

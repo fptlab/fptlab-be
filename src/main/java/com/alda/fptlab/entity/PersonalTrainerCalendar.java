@@ -1,36 +1,42 @@
 package com.alda.fptlab.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Slot {
+public class PersonalTrainerCalendar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private int month;
+    private int day;
+
     @ManyToOne
     @JoinColumn(
-            name = "personal_trainer_calendar_id",
+            name = "personal_trainer_id",
             nullable = false
     )
     @JsonBackReference
-    private PersonalTrainerCalendar personalTrainerCalendar;
+    private PersonalTrainer personalTrainer;
 
+    @OneToMany(
+            mappedBy = "personalTrainerCalendar"
+    )
+    @JsonManagedReference
     @Builder.Default
-    private boolean available = true;
-
-    private Timestamp timeFrom;
-    private Timestamp timeTo;
+    Collection<Slot> slotList = new ArrayList<>();
 }

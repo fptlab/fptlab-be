@@ -1,6 +1,7 @@
 package com.alda.fptlab.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,5 +35,6 @@ public class Subscription {
     private SubscriptionType subscriptionType;
 
     @OneToMany(mappedBy = "subscription")
+    @JsonManagedReference
     private List<Reservation> reservationList;
 }

@@ -31,18 +31,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Please enter first name")
     private String firstName;
-
-    @NotBlank(message = "Please enter last name")
     private String lastName;
-
-    @NotBlank(message = "Please enter email")
-    @Size(max = 50)
-    @Email
     private String email;
 
-    @NotBlank(message = "Please enter password")
     @JsonIgnore
     private String password;
 
@@ -68,7 +60,7 @@ public class User {
     private Collection<Role> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    @Builder.Default
     @JsonManagedReference
+    @Builder.Default
     private Collection<Subscription> subscriptionList = new ArrayList<>();
 }
