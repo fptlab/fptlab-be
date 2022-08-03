@@ -39,4 +39,10 @@ public class PersonalTrainerCalendar {
     @JsonManagedReference
     @Builder.Default
     Collection<Slot> slotList = new ArrayList<>();
+
+    private int timeFrom;
+    private int timeTo;
+    private String timeFromLabel;
+    private String timeToLabel;
+
 }

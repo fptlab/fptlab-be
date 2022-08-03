@@ -20,6 +20,5 @@ public class PersonalTrainerDTO {
     @NotBlank(message = "Campo cognome obbligatorio!")
     private String lastName;
 
-    @NotBlank
-    Collection<PersonalTrainerCalendar> personalTrainerCalendarList;
+    Collection<PersonalTrainerCalendarDTO> personalTrainerCalendarList;
 }

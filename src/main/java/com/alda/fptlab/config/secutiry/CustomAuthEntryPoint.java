@@ -25,7 +25,7 @@ public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
 
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder()
                 .status(HttpServletResponse.SC_UNAUTHORIZED)
-                .message(authException.getMessage())
+                .message(authException.getMessage()) //TODO cambiare messaggio per bad credential
                 .build();
 
         new ObjectMapper().writeValue(response.getOutputStream(), apiResponseDTO);

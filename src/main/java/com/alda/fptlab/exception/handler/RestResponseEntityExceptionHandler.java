@@ -75,6 +75,16 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(PersonalTrainerNotFoundException.class)
+    public ResponseEntity<ApiResponseDTO> personalTrainerNotFoundException (PersonalTrainerNotFoundException personalTrainerNotFoundException, WebRequest request) {
+        var error = ApiResponseDTO.builder()
+                .status(HttpServletResponse.SC_NOT_FOUND)
+                .message(personalTrainerNotFoundException.getMessage())
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<ValidationErrorDTO> validationErrorDetails = ex.getBindingResult()

@@ -1,5 +1,6 @@
 package com.alda.fptlab.entity;
 
+import com.alda.fptlab.enums.EWorkOutDuration;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.sql.Time;
 
 @Entity
 @Data
@@ -31,6 +32,12 @@ public class Slot {
     @Builder.Default
     private boolean available = true;
 
-    private Timestamp timeFrom;
-    private Timestamp timeTo;
+    @Enumerated(EnumType.STRING)
+    private EWorkOutDuration workOutDuration;
+
+    private String timeFromLabel;
+    private String timeToLabel;
+
+    private int timeFrom;
+    private int timeTo;
 }
