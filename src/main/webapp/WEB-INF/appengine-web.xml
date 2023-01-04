@@ -6,6 +6,7 @@
         <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties"/>
     </system-properties>
     <env-variables>
-        <env-var name="TEST" value="TEST" />
+        <env-var name="JWT_SECRET" value="secret" />
+        <env-var name="JWT_EXPIRATION_TIME" value="6000000" />
     </env-variables>
 </appengine-web-app>
