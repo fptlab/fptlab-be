@@ -2,6 +2,7 @@
     <threadsafe>true</threadsafe>
     <runtime>java11</runtime>
     <instance-class>F2</instance-class>
+    <public-root>/rest/api</public-root>
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties"/>
     </system-properties>
