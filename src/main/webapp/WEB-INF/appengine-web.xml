@@ -6,9 +6,10 @@
         <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties"/>
     </system-properties>
     <env-variables>
+        <env-var name="DEFAULT_ENCODING" value="UTF-8" />
         <env-var name="JWT_SECRET" value="secret" />
         <env-var name="JWT_EXPIRATION_TIME" value="6000000" />
-        <env-var name="SPRING_DATASOURCE_URL" value="jdbc:postgresql:///ptlab?cloudSqlInstance=pt-lab-373712:europe-southwest1:ptlab-db%26socketFactory=com.google.cloud.sql.postgres.SocketFactory%26user=postgres%26password=AYE#/DX#_9f:dpjV" />
+        <env-var name="SPRING_DATASOURCE_URL" value="jdbc:postgresql:///ptlab?cloudSqlInstance=pt-lab-373712:europe-southwest1:ptlab-db&amp;socketFactory=com.google.cloud.sql.postgres.SocketFactory&amp;user=postgres&amp;password=AYE#/DX#_9f:dpjV"/>
         <env-var name="SPRING_DATASOURCE_USERNAME" value="postgres" />
         <env-var name="SPRING_DATASOURCE_PASSWORD" value="AYE#/DX#_9f:dpjV" />
     </env-variables>
