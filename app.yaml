@@ -1,7 +1,0 @@
-runtime: java11
-env: standard
-
-env_variables:
-  SPRING_DATASOURCE_URL: jdbc:postgresql:///ptlab?cloudSqlInstance=pt-lab-373712:europe-southwest1:ptlab-db&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=postgres&password=AYE#/DX#_9f:dpjV
-  SPRING_DATASOURCE_USERNAME: postgres
-  SPRING_DATASOURCE_PASSWORD: AYE#/DX#_9f:dpjV

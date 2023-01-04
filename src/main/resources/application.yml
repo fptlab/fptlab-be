@@ -6,9 +6,9 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: jdbc:postgresql:///ptlab?cloudSqlInstance=pt-lab-373712:europe-southwest1:ptlab-db&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=postgres&password=AYE#/DX#_9f:dpjV
+    username: postgres
+    password: AYE#/DX#_9f:dpjV
     driverClassName: org.postgresql.Driver
 
 server:
