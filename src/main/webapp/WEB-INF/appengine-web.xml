@@ -2,12 +2,14 @@
     <threadsafe>true</threadsafe>
     <runtime>java11</runtime>
     <instance-class>F2</instance-class>
-    <context-root>/rest/api</context-root>
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties"/>
     </system-properties>
     <env-variables>
         <env-var name="JWT_SECRET" value="secret" />
         <env-var name="JWT_EXPIRATION_TIME" value="6000000" />
+        <env-var name="SPRING_DATASOURCE_URL" value="jdbc:postgresql:///ptlab?cloudSqlInstance=pt-lab-373712:europe-southwest1:ptlab-db&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=postgres&password=AYE#/DX#_9f:dpjV" />
+        <env-var name="SPRING_DATASOURCE_USERNAME" value="postgres" />
+        <env-var name="SPRING_DATASOURCE_PASSWORD" value="AYE#/DX#_9f:dpjV" />
     </env-variables>
 </appengine-web-app>
