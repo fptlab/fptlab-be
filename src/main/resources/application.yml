@@ -12,6 +12,6 @@ spring:
     driverClassName: org.postgresql.Driver
 
 server:
-  port: 8082
+  port: 8080
   servlet:
     context-path: "/rest/api"
